@@ -29,12 +29,16 @@ const Home = () => {
   }, [])
 
 
+
   if (loading) {
     return <h1>Loading...</h1>;
   }
 
   return (
     <>
+
+
+
       <h1>Blog posts</h1>
 
       <Link to="/create" style={{

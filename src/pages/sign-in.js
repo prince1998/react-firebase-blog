@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getFirebase } from "../firebase";
+import { Link } from 'react-router-dom'
 
 const labelStyles = {
     display: "block",
@@ -62,7 +63,18 @@ const SignIn = () => {
                     padding: "8px 12px",
                     fontSize: "0.9rem"
                 }}
-                    onClick={signOut}> Sign Out</button>
+
+                    onClick={signOut} > Sign Out</button >
+                <Link to="/" style={{
+                    border: "none",
+                    color: "#fff",
+                    backgroundColor: "#039be5",
+                    borderRadius: "4px",
+                    padding: "8px 12px",
+                    fontSize: "0.9rem"
+                }}> View your profile</Link>
+
+
             </>
         );
     }
