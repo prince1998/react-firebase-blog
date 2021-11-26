@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { getFirebase } from "../firebase";
 import { Link } from 'react-router-dom'
+import GoogleLogin from 'react-google-login';
+
+
+
+
 
 const labelStyles = {
     display: "block",
@@ -17,13 +22,16 @@ const inputStyles = {
     padding: "0 0.25rem"
 };
 
+
 const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [user, setUser] = useState();
+    const [googleUser, setGoogleUser] = useState();
 
     getFirebase().auth().onAuthStateChanged((user) => {
         if (user) {
+            console.log(user);
             setUser(user);
         }
     });
@@ -43,6 +51,7 @@ const SignIn = () => {
             .signOut()
             .then(() => {
                 setUser();
+                setGoogleUser();
             })
             .catch(error => {
                 console.error(error);
@@ -50,11 +59,15 @@ const SignIn = () => {
             });
     };
 
+    const responseGoogle = response => {
+        setGoogleUser(response);
+        setEmail(response.profileObj.email);
+    };
 
-    if (user) {
+    if (user ?? googleUser) {
         return (
             <>
-                <h1>{`Logged in as: ${user.email}`}</h1>
+                <h1>{`Logged in as: ${email}`}</h1>
                 <button style={{
                     border: "none",
                     color: "#fff",
@@ -75,11 +88,13 @@ const SignIn = () => {
                 }}> View your profile</Link>
 
 
+
             </>
         );
     }
 
     return (
+
         <>
             <h1>Sign in</h1>
             <section style={{ margin: "2rem 0" }}>
@@ -119,6 +134,15 @@ const SignIn = () => {
                     >
                         Log In
                     </button>
+                    <GoogleLogin
+                        clientId="299062469029-b04om2tb8n8hnk2e9ed2i7o718tidook.apps.googleusercontent.com"
+                        buttonText="Login"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
+
+
                 </div>
             </section>
         </>
